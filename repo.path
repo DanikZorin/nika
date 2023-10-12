@@ -4,6 +4,7 @@
 
 # Do not build examples
 !kb/pattern
+!kb/section_subject_domain_of_infrastructure
 
 #components
 kb
