@@ -14,7 +14,7 @@ import { MarkerWithLabel } from "react-google-maps/lib/components/addons/MarkerW
 import { compose, withProps } from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
-/*global google*/
+// /*global google*/
 const google = window.google = window.google ? window.google : {};
 
 export const Demo = () => {
