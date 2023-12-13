@@ -10,6 +10,9 @@ import { SC_WEB_URL } from "@constants";
 import { lazy, useEffect, useState } from "react";
 import { ScAddr, ScEventParams, ScEventType, ScTemplate, ScType } from "ts-sc-client";
 import { client } from "@api";
+import { MarkerWithLabel } from "react-google-maps/lib/components/addons/MarkerWithLabel"
+import { compose, withProps } from "recompose"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
 export const Demo = () => {
     const [user, setUser] = useState<ScAddr | null>(null);
@@ -36,16 +39,26 @@ export const Demo = () => {
             setIsLoading(false);
         })();
     }, [initChat]);
+    const [cords, setCords] = useState<string>
+    ('53.902246:27.561886');
+    const [objAddr, setObjAddr] = useState<string>
+    ('Минск, проспект Независимости');
+    const [objName, setObjName] = useState<string>
+    ('Нулевой километр Беларуси');
     const [mapUrl, setMapUrl] = useState<string>
     ('https://yandex.com/map-widget/v1/?l=sat%2Cskl&ll=27.561824%2C53.902287&poi[point]=27.561824%2C53.902287&mode=poi&z=18&lang=ru');
     async function onNewMapObject(classAddr: ScAddr, edgeAddr: ScAddr, actionAddr: ScAddr, eventId: number) {
         const action_get_maps_object_info = 'action_get_maps_object_info';
         const nrel_answer = 'nrel_answer';
         const nrel_cords = 'nrel_cords';
+        const nrel_address = 'nrel_address'
+        const nrel_main_idtf = 'nrel_main_idtf'
         const baseKeynodes = [
             { id: action_get_maps_object_info, type: ScType.NodeConstClass },
             { id: nrel_answer, type: ScType.NodeConstNoRole },
             { id: nrel_cords, type: ScType.NodeConstNoRole },
+            { id: nrel_address, type: ScType.NodeConstNoRole},
+            { id: nrel_main_idtf, type: ScType.NodeConstNoRole},
         ];
 
         const keynodes = await client.resolveKeynodes(baseKeynodes);
@@ -53,6 +66,8 @@ export const Demo = () => {
         const structAlias = '_struct';
         const nodeEntityAlias = '_node_entity'
         const cordsLinkAlias = '_cords_link'
+        const addrLinkAlias = '_addr_link'
+        const nameLinkAlias = '_name_link'
 
         const template = new ScTemplate();
         template.triple(
@@ -79,22 +94,48 @@ export const Demo = () => {
             ScType.EdgeAccessVarPosPerm,
             keynodes[nrel_cords],
         );
+        template.tripleWithRelation(
+            nodeEntityAlias,
+            ScType.EdgeDCommonVar,
+            [ScType.LinkVar, addrLinkAlias],
+            ScType.EdgeAccessVarPosPerm,
+            keynodes[nrel_address],
+        );
+        template.tripleWithRelation(
+            nodeEntityAlias,
+            ScType.EdgeDCommonVar,
+            [ScType.LinkVar, nameLinkAlias],
+            ScType.EdgeAccessVarPosPerm,
+            keynodes[nrel_main_idtf],
+        );
         const result = await client.templateSearch(template);
         
         if (result.length) {
-            const link = result[0].get(cordsLinkAlias);
-            const cords_result = await client.getLinkContents([link]);
+            const link_cords = result[0].get(cordsLinkAlias);
+            const cords_result = await client.getLinkContents([link_cords]);
             if (cords_result.length) {
                 const cords_str = cords_result[0].data as string;
                 const cords_arr = cords_str.split(':', 2);
                 console.log(cords_str)
                 console.log(cords_arr)
+                setCords(cords_str)
                 setMapUrl(`https://yandex.com/map-widget/v1/?l=sat%2Cskl&ll=`+cords_arr[1]+`%2C`+cords_arr[0]+`&poi[point]=`+cords_arr[1]+`%2C`+cords_arr[0]+`&mode=poi&z=18&lang=ru`)
                 console.log(cords_arr[1], cords_arr[0])
+                setCords(cords_str)
+                console.log(cords)
             }
+            const link_addr = result[0].get(addrLinkAlias);
+            const addr_result = await client.getLinkContents([link_addr]);
+            if (addr_result.length) {
+                const addr_str = addr_result[0].data as string;
+                setObjAddr(addr_str)}
+            const link_name = result[0].get(nameLinkAlias);
+            const name_result = await client.getLinkContents([link_name]);
+            if (name_result.length) {
+                const name_str = name_result[0].data as string;
+                setObjName(name_str)}
         }    
-    
-    };
+   ;}
     async function onNewRoute(classAddr: ScAddr, edgeAddr: ScAddr, actionAddr: ScAddr, eventId: number) {
         const action_get_path_between_objects = 'action_get_path_between_objects';
         const rrel_1 = 'rrel_1';
@@ -166,6 +207,9 @@ export const Demo = () => {
         }
 
     };
+    // const MyMapComponent = withGoogleMap((props) => <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }} > 
+    // {<Marker position={{ lat: -34.397, lng: 150.644 }} />} </GoogleMap> )
+
     const registerMapEvent = async () => {
         const question_finished = 'question_finished';
 
@@ -180,6 +224,30 @@ export const Demo = () => {
         await client.eventsCreate(newObjectEventParams);
         await client.eventsCreate(newRouteEventParams);
     };
+    const cords_arr = cords.split(':', 2);
+    const SingleObjectComponent = compose(
+        withProps({
+          googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCp0BClKtxFt_9uI_WP24B_MT2KyRjvx-o",
+          loadingElement: <div style={{ height: `100%` }} />,
+          containerElement: <div style={{ height: `100%` }} />,
+          mapElement: <div style={{ height: `100%`, borderRadius: `16px` }}/>,
+        }),
+        withScriptjs,
+        withGoogleMap
+      )((props) =>
+        <GoogleMap
+          defaultZoom={16}
+          defaultCenter={{ lat: Number(cords_arr[0]), lng: Number(cords_arr[1]) }}
+        >
+            <MarkerWithLabel
+            position={{ lat: Number(cords_arr[0]), lng: Number(cords_arr[1]) }}
+            labelStyle={{backgroundColor: "white", fontSize: "14px", padding: "8px", borderRadius: "8px", color: "rgb(6, 98, 107)"}}
+            labelAnchor={new google.maps.Point(0, 0)} >
+            <div>{objName}<br/>{objAddr}</div>
+        </MarkerWithLabel>
+          {/* {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} onClick={props.onMarkerClick}/>} */}
+        </GoogleMap>
+      )
     useEffect(() => {
         registerMapEvent();
     },[]);
@@ -216,7 +284,12 @@ export const Demo = () => {
                 </Chat>
             </ChatWrapper>
             <SCgViewerWrapper>
-                <iframe className="frame-map" src={mapUrl} style={{width: '100%', height: '100%', border: 0, borderRadius: '15px'}} />
+                {/* <iframe className="frame-map" src={mapUrl} style={{width: '100%', height: '100%', border: 0, borderRadius: '15px'}} /> */}
+                {/* <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }} >
+                     {<Marker position={{ lat: -34.397, lng: 150.644 }} />} </GoogleMap> */}
+                <SingleObjectComponent isMarkerShown={true} onMarkerClick={() => {}} />
+
+
             </SCgViewerWrapper>
         </Wrapper>
     );
