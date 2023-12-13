@@ -225,12 +225,12 @@ export const Demo = () => {
         await client.eventsCreate(newRouteEventParams);
     };
     const cords_arr = cords.split(':', 2);
-    const MyMapComponent = compose(
+    const SingleObjectComponent = compose(
         withProps({
           googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCp0BClKtxFt_9uI_WP24B_MT2KyRjvx-o",
           loadingElement: <div style={{ height: `100%` }} />,
           containerElement: <div style={{ height: `100%` }} />,
-          mapElement: <div style={{ height: `100%` }} />,
+          mapElement: <div style={{ height: `100%`, borderRadius: `16px` }}/>,
         }),
         withScriptjs,
         withGoogleMap
@@ -283,7 +283,7 @@ export const Demo = () => {
                 {/* <iframe className="frame-map" src={mapUrl} style={{width: '100%', height: '100%', border: 0, borderRadius: '15px'}} /> */}
                 {/* <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }} >
                      {<Marker position={{ lat: -34.397, lng: 150.644 }} />} </GoogleMap> */}
-                <MyMapComponent isMarkerShown={true} onMarkerClick={() => {}} />
+                <SingleObjectComponent isMarkerShown={true} onMarkerClick={() => {}} />
 
 
             </SCgViewerWrapper>
