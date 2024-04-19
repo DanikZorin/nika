@@ -12,7 +12,7 @@ export const HeaderPanel = () => {
                         <NavLink to={routes.MAIN}>Главная</NavLink>
                     </li>
                     <li>
-                        <NavLink to={routes.ABOUT}>Карта</NavLink>
+                        <NavLink to={routes.ABOUT}>Визуализатор базы знаний</NavLink>
                     </li>
                 </ul>
             </div>

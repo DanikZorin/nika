@@ -162,8 +162,9 @@ export const Demo = () => {
                 console.log(secondCordsStr)
             }
             console.log(`https://yandex.by/map-widget/v1/?mode=routes&rtext=`+firstCordsArr[0]+`%2C`+firstCordsArr[1]+`~`+secondCordsArr[0]+`%2C`+secondCordsArr[1]+`&rtt=pd`)
-            setMapUrl(`https://yandex.by/map-widget/v1/?mode=routes&rtext=`+firstCordsArr[0]+`%2C`+firstCordsArr[1]+`~`+secondCordsArr[0]+`%2C`+secondCordsArr[1]+`&rtt=pd`)
-        }
+            //setMapUrl(`https://yandex.by/map-widget/v1/?mode=routes&rtext=`+firstCordsArr[0]+`%2C`+firstCordsArr[1]+`~`+secondCordsArr[0]+`%2C`+secondCordsArr[1]+`&rtt=pd`)
+            setMapUrl(`https://yandex.com/map-widget/v1/?mode=routes&routes%5BavoidTypes%5D=tramway%2Cunderground%2Cminibus%2Crailway&rtext=`+firstCordsArr[0]+`%2C`+firstCordsArr[1]+`~`+secondCordsArr[0]+`%2C`+secondCordsArr[1]+`&rtt=mt`)
+        }           //https://yandex.com/map-widget/v1/?mode=routes&routes%5BavoidTypes%5D=tramway%2Cunderground%2Cminibus%2Crailway&rtext=   &rtt=mt
 
     };
     const registerMapEvent = async () => {
