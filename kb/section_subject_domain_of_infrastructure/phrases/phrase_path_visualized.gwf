@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GWF version="2.0">
+    <staticSector>
+       <node type="node/const/perm/group" idtf="concept_phrase_about_path" shapeColor="0" id="180" parent="0" left="0" top="0" right="16.125" bottom="25" textColor="164" text_angle="0" text_font="Times New Roman [Arial]" font_size="10" x="1411.9319999999998" y="553.274" haveBus="false" idtf_pos="0">
+           <content type="0" mime_type="" content_visibility="false" file_name=""/>
+       </node>
+       <node type="node/const/perm/group" idtf="lang_ru" shapeColor="0" id="186" parent="0" left="0" top="0" right="16.125" bottom="25" textColor="164" text_angle="0" text_font="Times New Roman [Arial]" font_size="10" x="1239.739" y="217.915" haveBus="false" idtf_pos="0">
+           <content type="0" mime_type="" content_visibility="false" file_name=""/>
+       </node>
+       <node type="node/const/perm/relation" idtf="nrel_inclusion" shapeColor="0" id="192" parent="0" left="0" top="0" right="16.125" bottom="25" textColor="164" text_angle="0" text_font="Times New Roman [Arial]" font_size="10" x="1226.2269999999999" y="613.773" haveBus="false" idtf_pos="0">
+           <content type="0" mime_type="" content_visibility="false" file_name=""/>
+       </node>
+       <node type="node/const/perm/group" idtf="concept_phrase" shapeColor="0" id="196" parent="0" left="0" top="0" right="16.125" bottom="25" textColor="164" text_angle="0" text_font="Times New Roman [Arial]" font_size="10" x="1410.217" y="653.466" haveBus="false" idtf_pos="0">
+           <content type="0" mime_type="" content_visibility="false" file_name=""/>
+       </node>
+       <node type="node/const/general_node" idtf="" shapeColor="0" id="182" parent="0" left="0" top="0" right="16.125" bottom="25" textColor="164" text_angle="0" text_font="Times New Roman [Arial]" font_size="10" x="1289.903" y="376.851" haveBus="false" idtf_pos="0">
+           <content type="1" mime_type="content/term" content_visibility="true" file_name=""><![CDATA[Маршрут построен и визуализирован на карте.]]></content>
+       </node>
+       <arc type="pair/const/pos/perm/orient/membership" idtf="" shapeColor="0" id="187" parent="0" id_b="186" id_e="182" b_x="1245.7587829195386" b_y="236.9875513133831" e_x="1280.4344852426582" e_y="346.851" dotBBalance="0" dotEBalance="0">
+           <points/>
+       </arc>
+       <arc type="pair/const/-/perm/orient" idtf="" shapeColor="0" id="197" parent="0" id_b="196" id_e="180" b_x="1410.5031581671828" b_y="633.4680472671987" e_x="1411.3646124369195" e_y="573.265950163835" dotBBalance="0" dotEBalance="0">
+           <points/>
+       </arc>
+       <arc type="pair/const/pos/perm/orient/membership" idtf="" shapeColor="0" id="198" parent="0" id_b="192" id_e="197" b_x="1246.2193723881317" b_y="613.220690037869" e_x="1400.859532073993" e_y="608.9485957069963" dotBBalance="0" dotEBalance="0.410916">
+           <points/>
+       </arc>
+       <arc type="pair/const/pos/perm/orient/membership" idtf="" shapeColor="0" id="203" parent="0" id_b="180" id_e="182" b_x="1400.5544663490484" b_y="536.8255432936257" e_x="1310.6499989276656" e_y="406.851" dotBBalance="0" dotEBalance="0">
+           <points/>
+       </arc>
+    </staticSector>
+</GWF>
